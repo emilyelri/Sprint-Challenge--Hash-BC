@@ -24,7 +24,12 @@ def proof_of_work(last_proof):
 
     print("Searching for next proof")
     proof = 0
-    #  TODO: Your code here
+
+    last_hash = f'{last_proof}'.encode()                                # grabbing last proof from params and encoding
+    last_hash_string = hashlib.sha256(last_hash).hexdigest()            # hashing it and stringify
+
+    while valid_proof(last_hash_string, proof) is False:                # incrementing proof when valid_proof returns false
+        proof += 1
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
@@ -39,8 +44,19 @@ def valid_proof(last_hash, proof):
     IE:  last_hash: ...AE9123456, new hash 123456E88...
     """
 
-    # TODO: Your code here!
-    pass
+    guess = f'{proof}'.encode()                                         # grabbing proof from params and encoding
+    guess_hash = hashlib.sha256(guess).hexdigest()                      # hashing it and stringify
+    return guess_hash[:6] == last_hash[-6:]                             # seeing if the first 6 chars of the newly hashed guess string
+                                                                        #  match the last 6 of the provided proof
+                                                                        # returning true if they do!
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
